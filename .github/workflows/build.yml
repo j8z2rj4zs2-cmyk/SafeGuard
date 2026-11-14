@@ -18,10 +18,10 @@ jobs:
         with:
           arch: x64
 
-      - name: Install ImGui via vcpkg
+      - name: Install ImGui via vcpkg (manifest mode)
         shell: cmd
         run: |
-          "%VCPKG_INSTALLATION_ROOT%\vcpkg.exe" install imgui[dx11-binding,win32-binding]:x64-windows --clean-after-build
+          "%VCPKG_INSTALLATION_ROOT%\vcpkg.exe" install --triplet x64-windows --x-manifest-root=.
 
       - name: Compile
         shell: cmd
