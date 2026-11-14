@@ -1,0 +1,37 @@
+name: build-safeguard
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup MSVC x64 toolchain
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Install ImGui via vcpkg
+        shell: cmd
+        run: |
+          "%VCPKG_INSTALLATION_ROOT%\vcpkg.exe" install imgui[dx11-binding,win32-binding]:x64-windows --clean-after-build
+
+      - name: Compile
+        shell: cmd
+        run: call build.cmd
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SafeGuard-build
+          path: |
+            SafeGuard.dll
+            Launcher.exe
+          retention-days: 30
