@@ -1,7 +1,12 @@
 @echo off
 setlocal enableextensions
 
-set VCPKG_INSTALL=%VCPKG_INSTALLATION_ROOT%\installed\x64-windows
+set VCPKG_INSTALL=%GITHUB_WORKSPACE%\vcpkg_installed\x64-windows
+if not exist "%VCPKG_INSTALL%\include\imgui.h" (
+    set VCPKG_INSTALL=%VCPKG_INSTALLATION_ROOT%\installed\x64-windows
+)
+
+echo === Using vcpkg path: %VCPKG_INSTALL% ===
 
 echo === Compiling SafeGuard.dll ===
 cl /nologo /LD /O2 /EHsc /std:c++17 /MD ^
